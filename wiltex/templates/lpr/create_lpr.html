@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Create LPR{% endblock %}
+
+{% block content %}
+    <body>
+      <div class="container">
+        <div class="row">
+          {% crispy form %}
+        </div>
+      </div>
+    </body>
+
+{% endblock content %}
