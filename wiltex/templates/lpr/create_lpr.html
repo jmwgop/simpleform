@@ -1,9 +1,12 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 {% block title %}Create LPR{% endblock %}
+
 
 {% block content %}
     <body>
+        <script type="text/javascript" src="{% static 'js/project.js' %}"></script>
       <div class="container">
         <div class="row">
           {% crispy form %}

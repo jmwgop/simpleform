@@ -7,16 +7,10 @@ from .forms import LPRForm
 
 @login_required(login_url='/accounts/login/')
 def create_lpr(request):
-    if request.method == "POST":
-        form = LPRForm(request.POST)
-        if form.is_valid():
-            # commit=False means the form doesn't save at this time.
-            # commit defaults to True which means it normally saves.
-            model_instance = form.save(commit=False)
-            model_instance.timestamp = timezone.now()
-            model_instance.save()
-            return redirect('create_lpr')
-    else:
-        form = LPRForm()
-
+    form = LPRForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        model_instance = form.save(commit=False)
+        model_instance.timestamp = timezone.now()
+        model_instance.save()
+        return redirect('create_lpr')
     return render(request, "lpr/create_lpr.html", {'form': form})

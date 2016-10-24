@@ -59,26 +59,7 @@ class lpr(models.Model):
     curative_image = models.FileField(upload_to='uploads/lprs/curative/')
     timestamp = models.DateTimeField()
 
-    def fields_required(self, fields):
-        for field in fields:
-            if not self.cleaned_data.get(field, ''):
-                msg = forms.ValidationError("This field is required.")
-                self.add_error(field, msg)
-
     def clean(self):
-        ogml = self.cleaned_data.get('ogml')
-        if ogml:
-            self.fields_required(['royalty',
-            'primary_term_in_years',
-            'extension_term_in_years',
-            'expiration_date'
-            ])
-        else:
-            self.cleaned_data['royalty',
-            'primary_term_in_years',
-            'extension_term_in_years',
-            'expiration_date'
-            ] = ''
         revisions = self.cleaned_data.get('revisions')
         if revisions:
             self.fields_required(['ogml_only',
@@ -98,7 +79,7 @@ class lpr(models.Model):
                                 'consent_assign',
                                 'shut_in',
                                 'water_well',
-            ])
+                                ])
         else:
             self.cleaned_data['ogml_only',
                                 'horziontal_pugh',
@@ -117,6 +98,12 @@ class lpr(models.Model):
                                 'consent_assign',
                                 'shut_in',
                                 'water_well',
+                                ] = ''
 
-            ] = ''
-            
+        return self.cleaned_data
+
+    def fields_required(self, fields):
+        for field in fields:
+            if not self.cleaned_data.get(field, ''):
+                msg = forms.ValidationError("This field is required.")
+                self.add_error(field, msg)
